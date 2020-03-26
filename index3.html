@@ -1,0 +1,443 @@
+<head>
+  <!-- <link href="https://vjs.zencdn.net/7.6.6/video-js.css" rel="stylesheet" /> -->
+
+  <link rel="stylesheet" href="./video-js.css" />
+  <link rel="stylesheet" href="./index3.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+  <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
+  <script src="./videojs-ie8.min.js"></script>
+  <script src="./mousetrap.min.js"></script>
+  <script src="./video.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="moment.min.js"></script>
+  <script src="moment.js"></script>
+</head>
+
+<body>
+  <div class="ivideo">
+    <div id="courseInfo">
+      <p id="courseInfoText"></p>
+    </div>
+    <div class="ivideo-absolute">
+      <div id="catalog">
+        <ul id="catalogList">
+          <li id="courseContainer1">
+            <p id="courseCountStyle">1</p>
+            <p>Lesson 1: <br /> Introduction</p>
+          </li>
+          <li id="courseContainer2">
+            <p id="courseCountStyle">2</p>
+            <p>Lesson 2: <br /> Conclusion</p>
+          </li>
+        </ul>
+      </div>
+      <div id="playbar">
+        <div id="playButton">
+          <i id="playIcon" class="material-icons" style="color:white">play_arrow</i>
+        </div>
+        <div id="time">
+          <p id="timeText">0:00</p>
+        </div>
+        <div id="progressBarContainer">
+          <div id="progressBar">
+            <div id="progress"></div>
+            <div id="trackLine"></div>
+          </div>
+        </div>
+        <div id="courseListButton">
+          <i id="courseListIcon" class="material-icons" style="color:white">list</i>
+        </div>
+        <div id="volumnButton">
+          <i id="volumnIcon" class="material-icons" style="color:white">volume_up</i>
+        </div>
+        <div id="settingButton">
+          <i id="settingIcon" class="material-icons" style="color:white">settings</i>
+        </div>
+        <div id="fullScreenButton">
+          <i id="fullScreenIcon" class="material-icons" style="color:white">fullscreen</i>
+        </div>
+      </div>
+    </div>
+    <div id="relative">
+      <video id="my-video" class="video-js" controls preload="auto" width="770" height="528">
+        <source src="Harimorphvideo.mov" type="video/mp4" />
+        <p class="vjs-no-js">
+          To view this video please enable JavaScript, and consider upgrading to a
+          web browser that
+          <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+        </p>
+      </video>
+    </div>
+  </div>
+
+  <script>
+    let triggered = false;
+    let duration;
+    let latestTime = 0.0;
+    let myPlayer;
+    let isMouseDown = false;
+    let restorePlay = false;
+    let timeupdate;
+    let ivideoAbsolute = $('.ivideo-absolute');
+
+
+    $(document).ready(function () {
+      var progressBarWidth = $('#progressBarContainer').width();
+
+      // $('#progress').animate({ width: 200 }, 100, 'linear');
+
+      myPlayer = videojs('my-video');
+      myPlayer.ready(function () {
+        this.one('loadedmetadata', function () {
+          duration = myPlayer.duration();
+          $('#progressBar').append(
+            "<div class=\"lesson1\" id=\"courseBallContainer\"><div id=\"courseBall\"><div id=\"courseBallOverlay\"></div></div></div>"
+          );
+          $('.lesson1').css("left", 0)
+          $('#progressBar').append(
+            "<div class=\"lesson2\" id=\"courseBallContainer\"><div id=\"courseBall\"><div id=\"courseBallOverlay\"></div></div>"
+          );
+          $('.lesson2').css("left", 10 / duration * progressBarWidth)
+
+          // Set first lesson cursor
+          // $('.lesson1').css("cursor", 'pointer')
+          $('#courseContainer1').css("cursor", 'pointer')
+        });
+
+        let lastTs = new Date();
+
+        // this.on('timeupdate', function () {
+        //   temp = new Date();
+        //   const tduration = temp - lastTs;
+        //   lastTs = temp;
+
+        //   var currentTime = moment(Math.floor(this.currentTime()), 'ss');
+        //   if(currentTime.minute() < 10) {
+        //     $('#timeText').html(currentTime.format('m:ss'));
+        //   } else {
+        //     $('#timeText').html(currentTime.format('mm:ss'));
+        //   }
+
+        //   var offsetLeft = this.currentTime() / duration * progressBarWidth;
+
+        //   $('#trackLine').animate({ left: offsetLeft }, 100, 'linear');
+        //   if (latestTime < this.currentTime()) {
+        //     $('#progress').animate({ width: offsetLeft }, 100, 'linear');
+        //     latestTime = this.currentTime();
+        //   }
+
+        //   // Set remaining lesson cursor
+        //   if (latestTime >= 3) {
+        //     // $('.lesson2').css("cursor", 'pointer')
+        //     $('#courseContainer2').css("cursor", 'pointer')
+        //   }
+        // });
+        myPlayer.on('play', function () {
+          console.log('onplay');
+          if (timeupdate) clearInterval(timeupdate);
+          resetTimeUpdate()
+        })
+
+        myPlayer.on('pause', function () {
+          console.log('onpause');
+          if (timeupdate) clearInterval(timeupdate);
+          var offsetLeft = (myPlayer.currentTime()) / duration * progressBarWidth;
+          $('#trackLine').stop().css('left', offsetLeft);
+          if (latestTime < myPlayer.currentTime()) {
+            $('#progress').stop().css('width', offsetLeft);
+            latestTime = myPlayer.currentTime();
+          }
+        })
+      });
+
+      myPlayer.on('ended', function () {
+        $('#playIcon').html("replay");
+        clearTimeout(interval);
+        showPlaybar();
+        interval = getInterval();
+      });
+
+      var lastButton;
+      var showCourseInfo = false;
+
+      $(document).mousemove(function (e) {
+        var button = checkButton(e.target);
+        if (lastButton && button !== lastButton) {
+          $("#" + lastButton).css({
+            backgroundColor: 'rgba(53, 53, 53, 0.7)'
+          });
+          lastButton = false;
+        }
+
+        if (button) {
+          $("#" + button).css({
+            backgroundColor: 'rgba(53, 53, 53, 1.0)'
+          });
+          lastButton = button;
+        }
+
+        if (checkSelfAndParent(e.target, 'courseBallContainer')) {
+          if ($(e.target.offsetParent).attr('class') === 'lesson1') {
+            $('#courseInfoText').html("Lesson 1: Introduction");
+          } else if ($(e.target.offsetParent).attr('class') == 'lesson2') {
+            $('#courseInfoText').html("Lesson 2: Conclusion");
+          }
+          if (!showCourseInfo) {
+            $('#courseInfo').animate({
+              "top": 534
+            }, 100);
+            showCourseInfo = true;
+          }
+        } else {
+          if (checkSelfAndParent(e.target, 'trackLine')) {
+            var offsetLeft = parseInt($('#trackLine').css('left').slice(0, -2))
+            var lesson2Offset = parseInt($($('.lesson2')[0]).css('left').slice(0, -2))
+            var inRange = false;
+            if (offsetLeft <= 32 && !showCourseInfo) {
+              $('#courseInfoText').html("Lesson 1: Introduction");
+              inRange = true;
+              // } else if (offsetLeft >= lesson2Offset && offset <= lesson2Offset + 32 && !showCourseInfo) {
+            } else if (offsetLeft >= lesson2Offset && !showCourseInfo) {
+              $('#courseInfoText').html("Lesson 2: Conclusion");
+              inRange = true;
+            }
+            if (inRange && !showCourseInfo) {
+              $('#courseInfo').animate({
+                "top": 534
+              }, 100);
+              showCourseInfo = true;
+            }
+          } else if (showCourseInfo) {
+            $('#courseInfo').animate({
+              "top": 502
+            }, 100);
+            showCourseInfo = false;
+          }
+        }
+      });
+
+      $(document).mousedown(function (e) {
+        console.log('mousedown');
+        if ((checkSelfAndParent(e.target, 'progressBar') || checkSelfAndParent(e.target,
+            'courseBallContainer'))) {
+          isMouseDown = true;
+          if (!myPlayer.paused()) {
+            restorePlay = true;
+            myPlayer.pause();
+          }
+        }
+      });
+
+      $(document).mouseup(function () {
+        console.log('mouseup');
+        isMouseDown = false;
+        if (restorePlay) {
+          restorePlay = false;
+          myPlayer.play();
+        }
+      });
+
+      $(document).click(function (e) {
+        console.log('mouseclick');
+        if (checkSelfAndParent(e.target, 'playButton')) {
+          togglePlayAndPause();
+        } else if (checkSelfAndParent(e.target, 'courseContainer1')) {
+          myPlayer.currentTime(0);
+        } else if (checkSelfAndParent(e.target, 'courseContainer2')) {
+          if (latestTime >= 10) {
+            myPlayer.currentTime(10);
+          }
+        } else if (checkSelfAndParent(e.target, 'courseListButton')) {
+          if (triggered) {
+            $("#catalog").animate({
+              "margin-left": 770
+            }, 'fast');
+          } else {
+            $("#catalog").animate({
+              "margin-left": 585
+            }, 'fast');
+          }
+          triggered = !triggered;
+        } else if (checkSelfAndParent(e.target, 'fullScreenButton')) {
+          /** TODO - Make page fullscreen, not videojs full screen **/
+          e.preventDefault();
+          $('.vjs-fullscreen-control').click();
+        } else if (checkSelfAndParent(e.target, 'courseBallContainer')) {
+          if ($(e.target.offsetParent).attr('class') === 'lesson1' && e.offsetX < $('#progress').width()) {
+            // const currTime = e.offsetX / progressBarWidth * duration
+            const offset = e.pageX - $('#progressBar').offset().left;
+            const currTime = offset / progressBarWidth * duration;
+            myPlayer.currentTime(currTime);
+            $('#trackLine').stop().css('left', offset);
+          } else if ($(e.target.offsetParent).attr('class') == 'lesson2') {
+            const offset = e.pageX - $('#progressBar').offset().left;
+            var realOffset = offset + parseInt($($('.lesson2')[0]).css('left').slice(0, -2))
+            const currTime = realOffset / progressBarWidth * duration
+            if (realOffset < $('#progress').width()) {
+              myPlayer.currentTime(currTime);
+              $('#trackLine').stop().css('left', realOffset)
+            }
+          }
+        } else if (checkSelfAndParent(e.target, 'progressBar')) {
+          if (e.offsetX < $('#progress').width()) {
+            const offset = e.pageX - $('#progressBar').offset().left;
+            const currTime = offset / progressBarWidth * duration
+            myPlayer.currentTime(currTime);
+            $('#trackLine').stop().css('left', offset)
+          }
+        } else if ($(e.target).hasClass('ivideo-absolute')) {
+          togglePlayAndPause();
+        }
+      });
+
+      let interval;
+      let showing;
+
+      function showPlaybar() {
+        if (!showing) {
+          showing = true;
+          ivideoAbsolute.stop().animate({
+            opacity: '1.0',
+          }, 'fast');
+        }
+      }
+
+
+      function checkSelfAndParent(target, id) {
+        if (target.id === id || (target.parentNode && target.parentNode.id && checkSelfAndParent(target.parentNode, id))) {
+          return true;
+        }
+        return false;
+      }
+
+      function togglePlayAndPause() {
+        switch ($('#playIcon').html()) {
+          case 'play_arrow':
+            myPlayer.play();
+            $('#playIcon').html("pause");
+            break;
+          case 'pause':
+            myPlayer.pause();
+            $('#playIcon').html("play_arrow");
+            break;
+          case 'replay':
+            myPlayer.play();
+            $('#playIcon').html("pause");
+            break;
+          default:
+            break;
+        }
+      }
+
+      function checkButton(target) {
+        if (target.id) {
+          return target.id.includes('Button') ? target.id :
+            (target.parentNode && target.parentNode.id && checkButton(target.parentNode));
+        } else {
+          return false;
+        }
+      }
+
+      function setTimeUpdate() {
+        return setInterval(() => {
+          var currentTime = moment(Math.floor(myPlayer.currentTime()), 'ss');
+          if (currentTime.minute() < 10) {
+            $('#timeText').html(currentTime.format('m:ss'));
+          } else {
+            $('#timeText').html(currentTime.format('mm:ss'));
+          }
+
+          var offsetLeft = (myPlayer.currentTime() + 0.1) / duration * progressBarWidth;
+
+          $('#trackLine').stop().css('left', myPlayer.currentTime() / duration * progressBarWidth).animate({
+            left: offsetLeft
+          }, 100, 'linear');
+          if (latestTime < myPlayer.currentTime()) {
+            $('#progress').stop().css('width', myPlayer.currentTime() / duration * progressBarWidth).animate({
+              width: offsetLeft
+            }, 100, 'linear');
+            latestTime = myPlayer.currentTime();
+          }
+
+          // Set remaining lesson cursor
+          if (latestTime >= 3) {
+            // $('.lesson2').css("cursor", 'pointer')
+            $('#courseContainer2').css("cursor", 'pointer')
+          }
+        }, 100)
+      }
+
+      function hidePlaybar() {
+        showing = false;
+        ivideoAbsolute.stop().animate({
+          opacity: '0',
+        }, 'fast');
+      }
+
+      function getInterval() {
+        return setTimeout(function () {
+          hidePlaybar();
+        }, 1000);
+      }
+
+      function checkSelfAndParent(target, id) {
+        return target.id === id ||
+          (target.parentNode && target.parentNode.id && checkSelfAndParent(target.parentNode, id));
+      }
+
+      function resetTimeUpdate() {
+        if (timeupdate) clearInterval(timeupdate);
+        timeupdate = setTimeUpdate();
+
+        // var offsetLeft = (myPlayer.currentTime() + 0.1) / duration * progressBarWidth;
+        // $('#trackLine').animate({
+        //   left: offsetLeft
+        // }, 100, 'linear');
+        // if (latestTime <= myPlayer.currentTime()) {
+        //   $('#progress').animate({
+        //     width: offsetLeft
+        //   }, 100, 'linear');
+        //   latestTime = myPlayer.currentTime();
+        // }
+      }
+
+      $(document).mousemove(function (e) {
+        if (isMouseDown) {
+          if ((checkSelfAndParent(e.target, 'progressBar') || checkSelfAndParent(e.target,
+              'courseBallContainer'))) {
+            const offset = e.pageX - $('#progressBar').offset().left;
+            if (offset < $('#progress').width()) {
+              const currTime = offset / progressBarWidth * duration
+              myPlayer.currentTime(currTime);
+              $('#trackLine').css('left', offset)
+            }
+          }
+        }
+
+        console.log(e, e.target, checkSelfAndParent(e.target, 'ivideo-absolute'))
+
+        if (checkSelfAndParent(e.target, 'playbar') || checkSelfAndParent(e.target, 'catalog')) {
+          clearTimeout(interval);
+          showPlaybar();
+        } else if ($(e.target).hasClass('ivideo-absolute')) {
+          clearTimeout(interval);
+          showPlaybar();
+          interval = getInterval();
+        } else {
+          hidePlaybar();
+        }
+      });
+
+      Mousetrap.bind('space', function (e) {
+        if (myPlayer.paused()) {
+          myPlayer.play();
+          togglePlayAndPause();
+        } else {
+          myPlayer.pause();
+          togglePlayAndPause();
+        }
+      });
+    });
+  </script>
+</body>

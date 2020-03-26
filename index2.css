@@ -1,0 +1,15 @@
+.ui-panel {
+    bottom: 0 !important;
+}
+.ui-panel-inner{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 4px !important;    
+    padding-right: 26px !important;
+    height: 98% !important;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.ui-panel-inner .ui-btn {
+    white-space: normal;
+}

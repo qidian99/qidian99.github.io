@@ -1,5 +1,4 @@
 /* eslint-disable require-jsdoc */
-
 const fetchLesson = async () => {
   await setTimeout(() => {}, 1000);
   return {

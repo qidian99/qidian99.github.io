@@ -2,6 +2,24 @@
   position: relative;
 }
 
+.ivideo {
+  margin: auto;
+}
+
+html, body {
+  height: 100%;
+}
+
+html {
+  display: table;
+  margin: auto;
+}
+
+body {
+  display: table-cell;
+  vertical-align: middle;
+}
+
 .ivideo-absolute {
   position: absolute;
   height: 528;

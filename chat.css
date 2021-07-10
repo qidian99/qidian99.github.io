@@ -1,0 +1,425 @@
+body {
+  font-family: "PingFang SC";
+  background: #eee;
+  /* This is just a helper in case the element has a transparent background or white colors. */
+}
+
+section.animations {
+  background-image: linear-gradient(114.9deg, #222222 8.3%, #00283C 41.6%, #008FD5 93.4%);
+  border-radius: 1.25em;
+  color: #FFFFFF;
+  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+  font-size: 17px;
+  line-height: 24px;
+  margin: 10% 0 7em;
+  overflow: hidden;
+  padding: 4.5rem 4.5rem 7rem;
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform,opacity;
+}
+
+@keyframes growUp {
+  0%, 14% {
+    opacity: .3;
+    transform: translate3d(0, 0, 0) scale3d(.88, .88, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+  }
+
+  17.5% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+  }
+}
+
+div.row.relative {
+  align-items: center;
+  color: #FFFFFF;
+  display: flex;
+  font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+  font-size: 17px;
+  line-height: 24px;
+  position: relative;
+}
+
+div {
+  color: #FFFFFF;
+  flex: 1;
+  font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+  font-size: 17px;
+  line-height: 24px;
+}
+
+div:first-child {
+  margin-right: 3rem;
+}
+
+h2.reveal {
+  color: #FFFFFF;
+  font-family: CerebriSans-Bold, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-size: 42px;
+  font-weight: 400;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  visibility: visible;
+}
+
+p.animation-text.reveal {
+  color: #FFFFFF;
+  font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+  font-size: 20px;
+  line-height: 24px;
+  visibility: visible;
+}
+
+a.button.demo-button.reveal {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.06) 0 1px 3px 0;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -.02em;
+  line-height: 24px;
+  margin: 0 auto;
+  overflow-wrap: break-word;
+  padding: .84375rem 1.5rem .65625rem;
+  text-align: center;
+  text-decoration: none;
+  transition: transform 250ms, background-position 500ms;
+  visibility: visible;
+}
+
+a.button.demo-button.reveal:hover {
+  box-shadow: rgba(0, 0, 0, 0.06) 0 4px 12px;
+  transform: translateY(-1px);
+}
+
+a.button.demo-button.reveal:focus {
+  box-shadow: rgba(0, 0, 0, 0.06) 0 4px 12px;
+  transform: translateY(-1px);
+}
+
+svg.svg-inline--fa.fa-eye.fa-w-18 {
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+  font-size: 17px;
+  height: 1em;
+  letter-spacing: -.34px;
+  line-height: 24px;
+  margin-right: 5px;
+  pointer-events: none;
+  text-align: center;
+  vertical-align: -.125em;
+  width: 1.125em;
+}
+
+path {
+  color: #FFFFFF;
+  cursor: pointer;
+  font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+  font-size: 17px;
+  letter-spacing: -.34px;
+  line-height: 24px;
+  pointer-events: none;
+  text-align: center;
+}
+
+div.animation-example {
+  color: #FFFFFF;
+  flex: 1;
+  font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+  font-size: 17px;
+  line-height: 24px;
+}
+
+div.animation-wrapper.reveal {
+  color: #FFFFFF;
+  font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+  font-size: 17px;
+  line-height: 24px;
+  visibility: visible;
+}
+
+svg.animated-heart {
+  animation: pulse 700ms infinite;
+  color: inherit;
+  display: block;
+  font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+  font-size: 80px;
+  height: 1em;
+  line-height: 24px;
+  margin: auto;
+  overflow: visible;
+  vertical-align: -.125em;
+  width: 1em;
+}
+
+@keyframes pulse {
+    50% {
+    filter: brightness(1.2);
+    transform: scale(1.2);
+  }
+
+}
+
+div.cssscan-example-css.reveal {
+  -webkit-font-smoothing: antialiased;
+  background-color: rgba(15, 17, 29, 0.95);
+  border-radius: 0 0 6px 6px;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0 0 8px 0, rgba(0, 0, 0, 0.24) 0 4px 8px 0;
+  box-sizing: border-box;
+  color: #B1B1B1;
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  left: 0;
+  line-height: 24px;
+  margin: 3.5em auto 0;
+  max-width: 400px;
+  min-width: 250px;
+  outline: 0;
+  padding: 14px 20px 20px;
+  position: relative;
+  text-align: left;
+  text-shadow: none;
+  top: 0;
+  visibility: visible;
+  will-change: transform;
+  z-index: 9;
+}
+
+p.cssscan-example-title {
+  background-color: initial;
+  background-image: none;
+  color: #2AF598;
+  cursor: text;
+  display: inline;
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  margin-bottom: 0;
+  margin-top: 0;
+  min-width: auto;
+  outline: 0;
+  text-align: left;
+  text-shadow: none;
+  word-break: break-all;
+}
+
+p.cssscan-example-title:nth-child(4) {
+  color: #CCCCCC;
+  font-size: 13px;
+}
+
+p.cssscan-example-classes-wrapper.cssscan-example-truncate-classes {
+  color: #2AF598;
+  cursor: text;
+  font-family: -apple-system, system-ui, Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 24px;
+  list-style: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  white-space: nowrap;
+  word-break: break-all;
+}
+
+p.cssscan-example-classes-wrapper.cssscan-example-truncate-classes:not(:empty) {
+  display: inline;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+p.cssscan-example-classes-wrapper.cssscan-example-truncate-classes:nth-child(4) {
+  background-color: initial;
+  background-image: none;
+  color: #CCCCCC;
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  min-width: auto;
+  outline: 0;
+  text-shadow: none;
+}
+
+p.cssscan-example-dimensions {
+  background-color: initial;
+  background-image: none;
+  color: #CCCCCC;
+  cursor: text;
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 24px;
+  margin-bottom: 0;
+  margin-top: 0;
+  max-width: 100%;
+  min-width: auto;
+  outline: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  text-shadow: none;
+  white-space: nowrap;
+}
+
+svg.svg-inline--fa.fa-ruler-combined.fa-w-16 {
+  color: #CCCCCC;
+  display: inline-block;
+  font-family: -apple-system, system-ui, Roboto, sans-serif;
+  font-size: 13px;
+  height: 1em;
+  line-height: 24px;
+  text-align: left;
+  vertical-align: -.125em;
+  white-space: nowrap;
+  width: 1em;
+}
+
+p.cssscan-example-font {
+  background-color: initial;
+  background-image: none;
+  color: #CCCCCC;
+  cursor: text;
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 24px;
+  margin-bottom: 0;
+  margin-top: 0;
+  min-width: auto;
+  outline: 0;
+  text-align: left;
+  text-shadow: none;
+}
+
+svg.svg-inline--fa.fa-font.fa-w-14 {
+  color: #CCCCCC;
+  display: inline-block;
+  font-family: -apple-system, system-ui, Roboto, sans-serif;
+  font-size: 13px;
+  height: 1em;
+  line-height: 24px;
+  text-align: left;
+  vertical-align: -.125em;
+  width: .875em;
+}
+
+p.cssscan-example-code.scss.hljs {
+  background-color: initial;
+  background-image: none;
+  color: #B8CDD1;
+  cursor: text;
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 24px;
+  min-width: auto;
+  outline: 0;
+  padding: 0;
+  text-align: left;
+  text-shadow: none;
+  white-space: pre-line;
+  word-break: break-all;
+}
+
+p.cssscan-example-code.scss.hljs:not(:empty) {
+  margin-top: 9.8px;
+}
+
+p.cssscan-example-code.scss.hljs:empty {
+  display: none;
+}
+
+p.cssscan-example-code.scss.hljs:nth-child(4) {
+  color: #CCCCCC;
+  font-size: 13px;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+span.hljs-attribute {
+  background-color: initial;
+  background-image: none;
+  color: #48C5DE;
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 24px;
+  min-width: auto;
+  opacity: 1;
+  outline: 0;
+  text-align: left;
+  text-shadow: none;
+  white-space: pre-line;
+  word-break: break-all;
+}
+
+span.hljs-number {
+  background-color: initial;
+  background-image: none;
+  color: #BD93F9;
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 24px;
+  min-width: auto;
+  opacity: 1;
+  outline: 0;
+  text-align: left;
+  text-shadow: none;
+  white-space: pre-line;
+  word-break: break-all;
+}
+
+div.cssscan-example-pseudo-box {
+  background-color: rgba(255, 255, 255, 0.067);
+  border-radius: 4px;
+  color: #B1B1B1;
+  cursor: text;
+  font-family: -apple-system, system-ui, Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 24px;
+  margin-top: 14px;
+  padding: 7px 10px;
+  text-align: left;
+}
+
+span.cssscan-example-pseudo-tag {
+  background-color: initial;
+  background-image: none;
+  color: #2AF598;
+  display: inline-block;
+  font-family: -apple-system, system-ui, Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 24px;
+  margin-bottom: 0;
+  outline: 0;
+  text-align: left;
+}
+
+p.cssscan-example-pseudo-code.scss.hljs {
+  background-color: initial;
+  background-image: none;
+  color: #B8CDD1;
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 24px;
+  margin-bottom: 0;
+  margin-top: 4.9px;
+  min-width: auto;
+  outline: 0;
+  padding: 0;
+  text-align: left;
+  text-shadow: none;
+  white-space: pre-line;
+  word-break: break-all;
+}
